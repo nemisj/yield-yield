@@ -158,6 +158,12 @@ describe('Yield twice', function () {
   });
 
   it('should handle errors correctly');
-  it('should give error that function is not a generator');
+
+  it('should give error that function is not a generator', function () {
+    expect(function () {
+      y2(function () {});
+    }).to.throw('Function is not a Generator');
+
+  });
 
 });

@@ -7,4 +7,7 @@ describe('index.js', function () {
     expect(y2).to.be.a('function');
   });
 
+  it('should wrap function', function () {
+  });
+
 });
