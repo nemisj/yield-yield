@@ -1,0 +1,28 @@
+{
+  "name": "twice-yield",
+  "version": "1.0.0",
+  "description": "Yeild functionality to write non async code",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemisj/twice-yield.git"
+  },
+  "keywords": [
+    "async",
+    "yield",
+    "javascript"
+  ],
+  "author": "Maks Nemisj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nemisj/twice-yield/issues"
+  },
+  "homepage": "https://github.com/nemisj/twice-yield",
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1"
+  }
+}
