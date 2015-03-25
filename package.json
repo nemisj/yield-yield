@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev:link": "cd node_modules && rm -rf yield-twice && ln -s ../ yield-twice",
-    "test": "mocha"
+    "test": "mocha --harmony"
   },
   "repository": {
     "type": "git",
