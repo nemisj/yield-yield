@@ -8,6 +8,30 @@ describe('index.js', function () {
   });
 
   it('should wrap function', function () {
+
+    var fnc = y2(function *() {});
+    expect(fnc).to.be.a('function');
+
   });
+
+  it('should execute callback', function (done) {
+
+    var fnc = y2(function *() {
+      var cb = yield;
+
+      setTimeout(function () {
+        cb();
+      }, 200);
+
+      return yield;
+    });
+
+    fnc(function () {
+      return done();
+    });
+    
+  });
+
+  it('should pass argumets to the callback');
 
 });

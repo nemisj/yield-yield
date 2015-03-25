@@ -13,11 +13,12 @@ describe('Yield twice', function () {
 
       return done();
 
-    });
+    }).run();
 
   });
 
   it('should run correctly when callback is called before the yield', function (done) {
+
     y2(function *() {
 
       var cb = yield;
@@ -27,7 +28,8 @@ describe('Yield twice', function () {
       expect(result[0]).to.equal('First argument');
 
       return done();
-    });
+    }).run();
+
   });
 
   it('should run multiple times in sync-flow', function (done) {
@@ -45,7 +47,7 @@ describe('Yield twice', function () {
       expect(resultTwo[0]).to.equal('Result two');
 
       return done();
-    });
+    }).run();
 
 
   });
@@ -67,7 +69,7 @@ describe('Yield twice', function () {
       expect(resultTwo[1]).to.equal('result two');
 
       return done();
-    });
+    }).run();
 
   });
 
@@ -83,7 +85,7 @@ describe('Yield twice', function () {
       var ret = yield;
 
       return done();
-    });
+    }).run();
   });
 
   it('should show error if cb is called in between yield', function (done) {
@@ -98,7 +100,8 @@ describe('Yield twice', function () {
       }).to.throw('Callback is called twice');
 
       return done();
-    });
+    }).run();
+
   });
 
   it('should show error if cb is called multiple times in async-flow', function (done) {
@@ -115,7 +118,8 @@ describe('Yield twice', function () {
         return done();
       }, 100);
 
-    });
+    }).run();
+
   });
 
   it('should do something when generator returns before callback in sync-flow', function (done) {
@@ -127,7 +131,7 @@ describe('Yield twice', function () {
         cb(null, 'result one');
 
         return;
-      });
+      }).run();
     } catch(e) {
       expect(e.message).to.include('Generator has no second yield statement');
       return done();
@@ -148,7 +152,7 @@ describe('Yield twice', function () {
         
 
         return;
-      });
+      }).run();
 
     } catch (e) {
       expect(e.message).to.include('Generator has no second yield statement');
