@@ -17,6 +17,19 @@ describe('Yield twice', function () {
 
   });
 
+  it('should pass real values', function (done) {
+    var fnc = y2(function *() {
+      return yield fs.readFile(__filename, { encoding: 'utf8' }, yield);
+    });
+
+    fnc(function (err, contents) {
+      expect(contents).to.include('describe(\'Yield twice\',');
+      done();
+      return;
+    });
+
+  });
+
   it('should run correctly when callback is called before the yield', function (done) {
 
     y2(function *() {
@@ -58,12 +71,12 @@ describe('Yield twice', function () {
       var cb = yield;
       var resultOne = yield setTimeout(function () {
         return cb(null, 'result one');
-      }, 100);
+      }, 50);
 
       var cb = yield;
       var resultTwo = yield setTimeout(function () {
         return cb(null, 'result two');
-      }, 100);
+      }, 50);
       
       expect(resultOne[1]).to.equal('result one');
       expect(resultTwo[1]).to.equal('result two');
@@ -116,7 +129,7 @@ describe('Yield twice', function () {
         }).to.throw('Callback is called twice');
 
         return done();
-      }, 100);
+      }, 50);
 
     }).run();
 
@@ -148,7 +161,7 @@ describe('Yield twice', function () {
 
         setTimeout(function () {
           cb(null, 'result one');
-        }, 100);
+        }, 50);
         
 
         return;
