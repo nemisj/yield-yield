@@ -1,6 +1,7 @@
-describe('index.js', function () {
+describe.only('index.js', function () {
 
-  var y2 = require('../index.js');
+  var y2 = require('yield-twice');
+
   var expect = require('chai').expect;
   var fs = require('fs');
   var async = require('async');
@@ -100,13 +101,17 @@ describe('index.js', function () {
   // Passing arguments via callback, like old node.js style
   //
   it('should pass arguments to the generator', function (done) {
-    var fnc = y2(function *() {
-      return yield fs.readFile(__filename, { encoding: 'utf8' }, yield);
+    var fnc = y2(function *(arg1, arg2) {
+      // return yield fs.readFile(arg1, { encoding: 'utf8' }, yield);
+      return [ null, arg1 + '-test', arg2 + '-test' ];
     });
 
-    fnc('arg1', 'arg2', function (err, contents) {
+    fnc(__filename, 'arg2', function (err, arg1, arg2) {
       expect(err).to.be.not.ok;
-      expect(contents).to.include('describe(\'index.js\',');
+
+      expect(arg1).to.equal(__filename + '-test');
+      expect(arg2).to.equal('arg2-test');
+
       return done();
     });
   });
