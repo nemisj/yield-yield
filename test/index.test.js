@@ -1,4 +1,4 @@
-describe.only('index.js', function () {
+describe('index.js', function () {
 
   var y2 = require('yield-twice');
 
@@ -29,7 +29,12 @@ describe.only('index.js', function () {
       return yield;
     });
 
-    return fnc(done);
+    fnc(function () {
+      console.log('args', arguments);
+      setTimeout(function () {
+        return done();
+      }, 10);
+    });
     
   });
 
@@ -103,14 +108,15 @@ describe.only('index.js', function () {
   it('should pass arguments to the generator', function (done) {
     var fnc = y2(function *(arg1, arg2) {
       // return yield fs.readFile(arg1, { encoding: 'utf8' }, yield);
-      return [ null, arg1 + '-test', arg2 + '-test' ];
+      return [ arg1 + '-test', arg2 + '-test' ];
     });
 
-    fnc(__filename, 'arg2', function (err, arg1, arg2) {
+    fnc(__filename, 'arg2', function (err, args) {
+
       expect(err).to.be.not.ok;
 
-      expect(arg1).to.equal(__filename + '-test');
-      expect(arg2).to.equal('arg2-test');
+      expect(args[0]).to.equal(__filename + '-test');
+      expect(args[1]).to.equal('arg2-test');
 
       return done();
     });

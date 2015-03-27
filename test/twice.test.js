@@ -1,4 +1,4 @@
-describe('Yield twice', function () {
+describe('test.twice.js', function () {
   var y2 = require('yield-twice');
   var fs = require('fs');
   var expect = require('chai').expect;
@@ -9,7 +9,7 @@ describe('Yield twice', function () {
       var result = yield fs.readFile(__filename, { encoding: 'utf8' }, yield);
 
       expect(result[0]).to.be.null;
-      expect(result[1]).to.include('describe(\'Yield twice\',');
+      expect(result[1]).to.include('describe');
 
       return done();
 
@@ -23,7 +23,7 @@ describe('Yield twice', function () {
     });
 
     fnc(function (err, contents) {
-      expect(contents).to.include('describe(\'Yield twice\',');
+      expect(contents).to.include('describe');
       done();
       return;
     });
@@ -135,42 +135,39 @@ describe('Yield twice', function () {
 
   });
 
-  it('should do something when generator returns before callback in sync-flow', function (done) {
+  it('should do something when generator returns before in sync-flow', function (done) {
 
-    try {
-      y2(function *() {
+      var fnc = y2(function *() {
         var cb = yield;
 
         cb(null, 'result one');
 
         return;
-      }).run();
-    } catch(e) {
-      expect(e.message).to.include('Generator has no second yield statement');
-      return done();
-    }
+      });
+
+      fnc(function (e) {
+        expect(e.message).to.include('Generator has no second yield statement');
+        return done();
+      });
 
   });
 
-  it('should do something when generator returns before callback in async-flow', function (done) {
+  it('should show error when generator returns before in async-flow', function (done) {
 
-    try {
-
-      y2(function *() {
+      var fnc = y2(function *() {
         var cb = yield;
 
         setTimeout(function () {
           cb(null, 'result one');
         }, 50);
         
-
         return;
-      }).run();
-
-    } catch (e) {
-      expect(e.message).to.include('Generator has no second yield statement');
-      return done();
-    }
+      });
+      
+      fnc(function (err) {
+        expect(err.message).to.include('Generator has no second yield statement');
+        return done();
+      });
 
   });
 
