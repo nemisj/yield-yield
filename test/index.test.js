@@ -1,36 +1,52 @@
 describe('index.js', function () {
 
-  var y2 = require('yield-twice');
+  var o_o = require('yield-yield');
 
   var expect = require('chai').expect;
   var fs = require('fs');
   var async = require('async');
 
   it('should be a function', function () {
-    expect(y2).to.be.a('function');
+    expect(o_o).to.be.a('function');
   });
 
   it('should wrap function', function () {
 
-    var fnc = y2(function *() {});
+    var fnc = o_o(function *() {});
     expect(fnc).to.be.a('function');
 
   });
 
+  /*
+  it('should never execute callback', function (done) {
+    var called = false;
+
+    var fnc = o_o(function *() {
+      var cb = yield;
+      var result = yield;
+      called = true;
+    });
+
+    fnc(function () {
+      return done();
+    });
+
+  });
+  */
+
   it('should execute callback', function (done) {
 
-    var fnc = y2(function *() {
+    var fnc = o_o(function *() {
       var cb = yield;
 
       setTimeout(function () {
         cb();
-      }, 50);
+      }, 1);
 
       return yield;
     });
 
     fnc(function () {
-      console.log('args', arguments);
       return done();
     });
     
@@ -40,16 +56,13 @@ describe('index.js', function () {
   // they can be passed directly to the generator
   // and will be unwrapped
   it('should pass arguments to the callback unwrapped', function (done) {
-    var fnc = y2(function *() {
+    var fnc = o_o(function *() {
       var cb = yield;
 
-      setTimeout(function () {
+      return yield setTimeout(function () {
         cb('arg1', 'arg2', 'arg3');
       }, 50);
 
-      var result = yield;
-
-      return result;
     });
 
     fnc(function (arg1, arg2, arg3) {
@@ -63,7 +76,7 @@ describe('index.js', function () {
   });
 
   it('should pass arguments to the callback wrapped', function (done) {
-    var fnc = y2(function *() {
+    var fnc = o_o(function *() {
       var cb = yield;
 
       setTimeout(function () {
@@ -85,7 +98,7 @@ describe('index.js', function () {
   });
 
   it('should pass error back as first argument', function (done) {
-    var fnc = y2(function *() {
+    var fnc = o_o(function *() {
       var cb = yield;
 
       throw new Error('Testing error');
@@ -104,7 +117,7 @@ describe('index.js', function () {
   // Passing arguments via callback, like old node.js style
   //
   it('should pass arguments to the generator', function (done) {
-    var fnc = y2(function *(arg1, arg2) {
+    var fnc = o_o(function *(arg1, arg2) {
       // return yield fs.readFile(arg1, { encoding: 'utf8' }, yield);
       return [ arg1 + '-test', arg2 + '-test' ];
     });
@@ -121,7 +134,7 @@ describe('index.js', function () {
   });
 
   it('should work with async', function (done) {
-    var fnc = y2(function *() {
+    var fnc = o_o(function *() {
 
       var result = yield async.map(['a', 'b', 'c'], function (item, cb) {
         setTimeout(function () {

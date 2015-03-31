@@ -1,6 +1,6 @@
 /*eslint es6:true */
 describe('Errors', function () {
-  var o_o = require('yield-twice');
+  var o_o = require('yield-yield');
   var expect = require('chai').expect;
 
   it('breaks before first yield', function (done) {

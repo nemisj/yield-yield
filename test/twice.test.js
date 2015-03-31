@@ -1,5 +1,6 @@
 describe('test.twice.js', function () {
-  var o_o = require('yield-twice');
+
+  var o_o = require('yield-yield');
   var fs = require('fs');
   var expect = require('chai').expect;
 

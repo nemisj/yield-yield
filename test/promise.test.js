@@ -3,7 +3,7 @@
 
 describe('Promise', function () {
   
-  var yy = require('yield-twice');
+  var o_o = require('yield-yield');
   var fs = require('fs');
   var expect = require('chai').expect;
   var promise = require('promise');
@@ -19,7 +19,7 @@ describe('Promise', function () {
       return p;
     };
 
-    var fnc = yy(function *() {
+    var fnc = o_o(function *() {
       var name = yield getUsername();
       expect(name).to.be.equal('Maks Nemisj');
     });
@@ -42,7 +42,7 @@ describe('Promise', function () {
       return p;
     };
 
-    var fnc = yy(function *() {
+    var fnc = o_o(function *() {
       // this one will throw error and willstop
       var name = yield getUsername();
     });
@@ -52,5 +52,6 @@ describe('Promise', function () {
       return done();
     });
   });
+
 
 });
