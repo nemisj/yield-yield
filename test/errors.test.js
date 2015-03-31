@@ -111,7 +111,8 @@ describe('Errors', function () {
     });
   });
 
-  it('should show error if cb is called twice after second yield', function (done) {
+  it('should show error if cb is called twice after second yield sync', function (done) {
+    var counter = 0;
     o_o(function *() {
 
       var cb = yield;
@@ -122,33 +123,42 @@ describe('Errors', function () {
         cb();
       }).to.throw('Callback is called twice');
 
-      return done();
     })(function (err) {
-      expect(err).to.be.not.ok;
-    });
 
+      counter++;
+      expect(counter).to.equal(1);
+      expect(err.message).to.include('Callback is called twice');
+
+      return done();
+    });
   });
 
-  it('should show error if cb is called multiple times in async', function (done) {
+  it('should show error if cb is called twice after second yield async', function (done) {
+    var counter = 0;
     o_o(function *() {
 
       var cb = yield;
+      cb();
+      var ret = yield;
 
-      cb(null, 'result one');
-      var resultOne = yield setTimeout(function () {
+      setTimeout(function () {
         expect(function () {
           cb();
         }).to.throw('Callback is called twice');
+        throw new Error('Should not trigger second time call into the callback');
+      }, 10);
 
-        return done();
-      }, 50);
+    })(function (err) {
+      counter++;
+      expect(counter).to.equal(1);
+      expect(err).to.be.not.ok;
 
-    }).run();
-
+      return done();
+    });
   });
 
 
-  it('should show error if cb is called multiple times in sync', function (done) {
+  it('should show error if cb is called twice before yield in sync', function (done) {
     o_o(function *() {
 
       var cb = yield;
@@ -160,7 +170,7 @@ describe('Errors', function () {
       var ret = yield;
 
     })(function (err) {
-      expect(err.message).to.include('Generator has been called twice');
+      expect(err.message).to.include('Callback is called twice');
       return done();
     });
   });
