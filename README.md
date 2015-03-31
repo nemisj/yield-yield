@@ -1,9 +1,79 @@
 # var o_o = yield (yield)();
 
+Yield-yield transforms your code which looks like this:
+
+```javascript
+var express = require('express');  
+var fs = require('fs');  
+var app = express();
+
+app.post('/process-file', function(req, res) {  
+  var inputFile = 'input.txt';
+  var outputFile = 'output.txt';
+
+  fs.readFile(inputFile, function(err, data) {
+    if (err) return res.status(500).send(err);
+
+    process1(data, function(err, data) {
+      if (err) return res.status(500).send(err);
+
+      process2(data, function(err, data) {
+        if (err) return res.status(500).send(err);
+
+        process3(data, function(err, data) {
+          if (err) return res.status(500).send(err);
+
+          fs.writeFile(outputFile, data, function(err) {
+            if (err) return res.status(500).send(err);
+
+            res.status(200).send('processed successfully using callback hell');
+          });
+        });
+      });
+    });
+  });
+});
+```
+( code taken from the http://blog.vullum.io/javascript-flow-callback-hell-vs-async-vs-highland/ )
+
+Into something like this:
+
+```javascript
+var express = require('express');  
+var fs = require('fs');  
+var app = express();
+var o_o = require('yield-yield');
+
+app.post('/process-file', o_o(function* (req, res) {  
+  var inputFile = 'input.txt';
+  var outputFile = 'output.txt';
+  
+  var res = yield fs.readFile(inputFile, yield);
+  if (res[0]) return res.status(500).send(err);
+  
+  res = yield process1(data, yield);
+  if (res[0]) return res.status(500).send(err);
+  
+  res = yield process2(data, yield);
+  if (res[0]) return res.status(500).send(err);
+  
+  res = yield process3(data, yield);
+  if (res[0]) return res.status(500).send(err);
+  
+  res = yield fs.writeFile(outputFile, yield);
+  if (res[0]) {
+    return res.status(500).send(err); 
+  }
+  
+  res.status(200).send('processed successfully using yield-yield');
+
+}));
+```
+
 ## Intro
 
-This is a small library for making node-style calls synchronous without transforming them
-into anything different. 
+In its purest form yield-yield gives the possibility to use the good old style node.js functions synchronously without transforming them into anything different.
+
 
 ```javascript
     var result = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
