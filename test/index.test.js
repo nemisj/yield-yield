@@ -31,9 +31,7 @@ describe('index.js', function () {
 
     fnc(function () {
       console.log('args', arguments);
-      setTimeout(function () {
-        return done();
-      }, 10);
+      return done();
     });
     
   });
