@@ -79,7 +79,9 @@ There is competely no mocking around with your functions at all. Only what this 
 
 ```javascript
 var superagent = require('superagent');
-require('yield-yield')(function *() {
+var o_o = require('yield-yield')
+
+module.exports = o_o(function *() {
     var fileResult = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
     // fileResult is an array represeting return values of the fs.readFile, 
     // fileResult = [ err, data ]
@@ -106,7 +108,6 @@ instead of the callback, and pausing the execution flow by using the second yiel
       cb(null, 'Some arguments');
     }, 10);
 
-    var result = yield;
     // result is going to be [ null, 'Some arguments' ];
 ```
 
