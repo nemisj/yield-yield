@@ -4,15 +4,18 @@ This is small library for making node-style calls synchronous without transformi
 into anything different. I call it yield-yield ( double yield ) and it looks
 like this:
 
+```javascript
     var result = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
     // result is an array represeting return values of the fs.readFile, 
     // result = [ err, data ]
+```
 
 It can be applied to any function which excepts callbacks by passing yield
 instead of the callback, and pausing thread using the second call.
 
 Just another example, to make it clear.
 
+```javascript
     var superagent = require('superagent');
 
     var result = yield request
@@ -27,11 +30,13 @@ Just another example, to make it clear.
     if (res.ok) {
       alert('yay got ' + JSON.stringify(res.body));
     } else {
-    alert('Oh no! error ' + res.text);
+      alert('Oh no! error ' + res.text);
     }
+```
 
-Or with the setTimeout:
+Or with the setTimeout():
 
+```javascript
     var cb = yield;
     setTimout(function () {
       cb(null, 'Some arguments');
@@ -39,9 +44,7 @@ Or with the setTimeout:
 
     var result = yield;
     // result is going to be [ null, 'Some arguments' ];
+```
 
 As you can see, defining the borders of asynchronous code we can structure it
 to look and work synchronously.
-
-
-
