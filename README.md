@@ -1,4 +1,4 @@
-# var o_o = yield (yield)();
+# var o_o = yield (yield)(); [![Build Status](https://travis-ci.org/nemisj/yield-yield.svg?branch=master)](https://travis-ci.org/nemisj/yield-yield)
 
 Yield-yield transforms your code which looks like this:
 
