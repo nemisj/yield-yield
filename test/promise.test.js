@@ -1,7 +1,7 @@
 /*eslint-env node*/
 'use strict';
 
-describe.only('Promise', function () {
+describe('Promise', function () {
   
   var o_o = require('yield-yield');
   var fs = require('fs');
