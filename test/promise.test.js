@@ -1,7 +1,7 @@
 /*eslint-env node*/
 'use strict';
 
-describe('Promise', function () {
+describe.only('Promise', function () {
   
   var o_o = require('yield-yield');
   var fs = require('fs');
@@ -20,8 +20,8 @@ describe('Promise', function () {
     };
 
     var fnc = o_o(function *() {
-      var name = yield getUsername();
-      expect(name).to.be.equal('Maks Nemisj');
+      var result = yield getUsername();
+      expect(result[1]).to.be.equal('Maks Nemisj');
     });
 
     fnc(function (err) {
@@ -44,11 +44,12 @@ describe('Promise', function () {
 
     var fnc = o_o(function *() {
       // this one will throw error and willstop
-      var name = yield getUsername();
+      var result = yield getUsername();
+      expect(result[0]).to.be.equal(message);
     });
 
     fnc(function (err) {
-      expect(err).to.equal(message);
+      expect(err).to.be.not.ok;
       return done();
     });
   });
