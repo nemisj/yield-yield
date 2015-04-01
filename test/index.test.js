@@ -34,19 +34,39 @@ describe('index.js', function () {
   });
   */
 
-  it('should execute callback', function (done) {
+  it('should pass arguments as they are', function (done) {
+    var arg1 = '#' + ~~(Math.random() * 1000);
 
+    var finished = false;
+
+    var fnc = o_o(function *($1, cb) {
+
+      expect($1).to.be.equal(arg1);
+      expect(cb).to.be.a('function');
+      expect(arguments.length).to.be.equal(2);
+
+      finished = true;
+
+      return cb();
+
+    });
+
+    fnc(arg1, function () {
+      expect(finished).to.be.true;
+      return done();
+    });
+
+  });
+
+  it('should execute callback when it is not specified but givven', function (done) {
+
+    var finished = false;
     var fnc = o_o(function *() {
-      var cb = yield;
-
-      setTimeout(function () {
-        cb();
-      }, 1);
-
-      return yield;
+      finished = true;
     });
 
     fnc(function () {
+      expect(finished).to.be.true;
       return done();
     });
     
