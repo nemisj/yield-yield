@@ -148,13 +148,12 @@ describe('Errors', function () {
         expect(function () {
           cb();
         }).to.throw('Callback is called twice');
-        throw new Error('Should not trigger second time call into the callback');
       }, 50);
 
     })(function (err) {
+      expect(err).to.be.not.ok;
       counter++;
       expect(counter).to.equal(1);
-      expect(err).to.be.not.ok;
 
       return done();
     });
