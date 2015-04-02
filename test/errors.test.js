@@ -113,6 +113,8 @@ describe('Errors', function () {
 
   it('should show error if cb is called twice after second yield sync', function (done) {
     var counter = 0;
+    var finished = false;
+
     o_o(function *() {
 
       var cb = yield;
@@ -122,12 +124,13 @@ describe('Errors', function () {
       expect(function () {
         cb();
       }).to.throw('Callback is called twice');
+      finished = true;
 
     })(function (err) {
 
       counter++;
       expect(counter).to.equal(1);
-      expect(err.message).to.include('Callback is called twice');
+      expect(finished).to.be.true;
 
       return done();
     });
@@ -146,7 +149,7 @@ describe('Errors', function () {
           cb();
         }).to.throw('Callback is called twice');
         throw new Error('Should not trigger second time call into the callback');
-      }, 10);
+      }, 50);
 
     })(function (err) {
       counter++;
@@ -159,6 +162,8 @@ describe('Errors', function () {
 
 
   it('should show error if cb is called twice before yield in sync', function (done) {
+    var finished = false;
+
     o_o(function *() {
 
       var cb = yield;
@@ -167,10 +172,13 @@ describe('Errors', function () {
         cb();
       }).to.throw('Callback is called twice');
 
-      var ret = yield;
+      yield;
+
+      finished = true;
 
     })(function (err) {
-      expect(err.message).to.include('Callback is called twice');
+
+      expect(finished).to.be.true;
       return done();
     });
   });

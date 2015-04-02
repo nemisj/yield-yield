@@ -75,7 +75,7 @@ describe('index.js', function () {
   // whenever yield returns arguments,
   // they can be passed directly to the generator
   // and will be unwrapped
-  it('should pass arguments to the callback unwrapped', function (done) {
+  it('should pass arguments to the callback unwrapped async', function (done) {
     var fnc = o_o(function *() {
       var cb = yield;
 
