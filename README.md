@@ -1,6 +1,6 @@
 # var o_o = yield (yield)(); [![Build Status](https://travis-ci.org/nemisj/yield-yield.svg?branch=master)](https://travis-ci.org/nemisj/yield-yield)
 
-Yield-yield transforms your code which looks like this:
+Double yield (yield-yield) helps you to organize your asynchronous callback code like this:
 
 ```javascript
 var express = require('express');  
@@ -72,19 +72,21 @@ app.post('/process-file', o_o(function* (req, res) {
 
 ## Intro
 
-In its purest form yield-yield gives the possibility to use the good old style node.js functions synchronously without transforming them into anything different, like `fs.sync.readFile(inputFile)` or `fs.readFile.bind(fs, inputFile)` or even `thunkify(fs.readFile.bind(fs))(inputFile)` and `Promise.promisify(fs.readFile)(inputData)`.
+In its purest form double yield give you the possibility to use the good old style node.js functions synchronously without transforming them into anything different, like `fs.sync.readFile(inputFile)` or `fs.readFile.bind(fs, inputFile)` or even `thunkify(fs.readFile.bind(fs))(inputFile)` and `Promise.promisify(fs.readFile)(inputData)`.
 
-There is competely no mocking around with your functions at all. Only what this libraryr is giving is the runner, whic allows you to run code asynchronous but sturcturing it synchronously.
+There is competely no need in changing callable functions or wrapping them. Double yield provides the generator runner, which allows you to run asynchronous code and sturcture it as if it is synchronous.
 
 
 ```javascript
 var superagent = require('superagent');
-var o_o = require('yield-yield')
+var o_o = require('yield-yield');
+var fs = require('fs');
 
 module.exports = o_o(function *() {
     var fileResult = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
     // fileResult is an array represeting return values of the fs.readFile, 
     // fileResult = [ err, data ]
+    var data = fileResult[1];
 
     var requestResult = yield request
       .post('/api/pet')
@@ -95,25 +97,13 @@ module.exports = o_o(function *() {
 
     // requestresult will hold the return values of superagent
     // [ err, response ]
-
+    var responseBody = requestResult[1];
+    
+    return [ data, responseBody];
 });
 ```
 
-It can be applied to any function which expects callback just by passing yield
-instead of the callback, and pausing the execution flow by using the second yield statement. 
-
-```javascript
-    var cb = yield;
-    var result = yield setTimeout(function () {
-      cb(null, 'Some arguments');
-    }, 10);
-
-    // result is going to be [ null, 'Some arguments' ];
-```
-
-As you can see, by defining the borders of asynchronous code we can structure it like synchronous code.
-
-While it's main purpose to work with pure callback systems, it can also be used with the promises.
+While its main purpose is to work with pure callback systems, it can be also used with the promises.
 
 ```javascript
 var Promise = require('promise');
@@ -138,7 +128,7 @@ app.post('/process-file', o_o(function* (req, res) {
 });
 ```
 
-In this way you don't have to rewrite your promised functions either in order to use them insie yield-yield runner.
+In this way you don't have to rewrite your promised functions in order to use them insie yield-yield runner.
 
 # API
 
