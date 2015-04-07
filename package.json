@@ -1,7 +1,7 @@
 {
-  "name": "twice-yield",
+  "name": "yield-yield",
   "version": "0.0.1",
-  "description": "Yeild functionality to write non async code",
+  "description": "Yeild functionality to write async code in sync manner",
   "main": "index.js",
   "scripts": {
     "dev:link": "cd node_modules && rm -rf yield-yield && ln -s ../ yield-yield",
