@@ -1,7 +1,7 @@
 /*eslint es6:true */
+/*global o_o, expect*/
+
 describe('Errors', function () {
-  var o_o = require('yield-yield');
-  var expect = require('chai').expect;
 
   it('breaks before first yield', function (done) {
     var msg = 'error #' + ~~(Math.random() * 1000);

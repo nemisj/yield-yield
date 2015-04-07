@@ -1,8 +1,5 @@
 describe('index.js', function () {
 
-  var o_o = require('yield-yield');
-
-  var expect = require('chai').expect;
   var fs = require('fs');
   var async = require('async');
 

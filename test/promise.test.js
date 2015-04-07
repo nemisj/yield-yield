@@ -1,11 +1,10 @@
 /*eslint-env node*/
+/*global o_o, expect*/
 'use strict';
 
 describe('Promise', function () {
   
-  var o_o = require('yield-yield');
   var fs = require('fs');
-  var expect = require('chai').expect;
   var promise = require('promise');
 
   it('should run promise and return its value', function (done) {

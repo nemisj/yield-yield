@@ -1,8 +1,8 @@
+/*global o_o, expect*/
+
 describe('test.twice.js', function () {
 
-  var o_o = require('yield-yield');
   var fs = require('fs');
-  var expect = require('chai').expect;
 
   it('should wait till the callback in the normal conditions', function (done) {
 
