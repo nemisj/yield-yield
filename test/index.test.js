@@ -2,6 +2,7 @@ describe('index.js', function () {
 
   var fs = require('fs');
   var async = require('async');
+  var expect = chai.expect;
 
   it('should be a function', function () {
     expect(o_o).to.be.a('function');

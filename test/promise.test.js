@@ -5,6 +5,7 @@
 describe('Promise', function () {
   
   var fs = require('fs');
+  var expect = chai.expect;
   var promise = require('promise');
 
   it('should run promise and return its value', function (done) {

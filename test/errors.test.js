@@ -3,6 +3,8 @@
 
 describe('Errors', function () {
 
+  var expect = chai.expect;
+
   it('breaks before first yield', function (done) {
     var msg = 'error #' + ~~(Math.random() * 1000);
     var fnc = o_o(function *() {

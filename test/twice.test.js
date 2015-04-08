@@ -3,6 +3,7 @@
 describe('test.twice.js', function () {
 
   var fs = require('fs');
+  var expect = chai.expect;
 
   it('should wait till the callback in the normal conditions', function (done) {
 

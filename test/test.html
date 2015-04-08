@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Mocha Tests</title>
-    <link rel="stylesheet" href="node_modules/mocha/mocha.css">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
   </head>
   <body>
     <div id="mocha"></div>
@@ -10,7 +10,11 @@
     <script src="../node_modules/chai/chai.js"></script>
     <script>mocha.setup('bdd')</script>
     <script src="../node_modules/yield-yield/lib/yield-twice.js"></script>
-    <script src="errors.test.js"></script>
-    <script>mocha.run();</script>
+
+    <script src="./errors.test.js"></script>
+
+    <script>
+      mocha.run();
+    </script>
   </body>
 </html>
