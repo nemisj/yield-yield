@@ -17,7 +17,7 @@
     "yield",
     "javascript"
   ],
-  "author": "Maks Nemisj",
+  "author": "Maks Nemisj <maks@nemisj.com> (http://nemisj.com/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nemisj/twice-yield/issues"
