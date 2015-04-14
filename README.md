@@ -76,7 +76,7 @@ app.post('/process-file', o_o(function* (req, res) {
 
 In its purest form double yield (yield-yield) gives the possibility to use the good old error-first callbacks synchronously without transforming them into anything different, like `fs.sync.readFile(inputFile)`, `fs.readFile.bind(fs, inputFile)`, `thunkify(fs.readFile.bind(fs))(inputFile)` or `Promise.promisify(fs.readFile)(inputData)`.
 
-There is competely no need in changing callable functions or wrapping them. Double yield (yield-yield) provides the generator runner, which allows you to run asynchronous code and sturcture it as if it is synchronous.
+There is completely no need in changing callable functions or wrapping them. Double yield (yield-yield) provides the generator runner, which allows you to run asynchronous code and structure it as if it is synchronous.
 
 ```javascript
 var superagent = require('superagent');
