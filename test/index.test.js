@@ -1,8 +1,9 @@
 describe('index.js', function () {
 
-  var fs = require('fs');
-  var async = require('async');
+  // var async = require('async');
   var expect = chai.expect;
+
+  var __filename = 'file #' + ~~(Math.random() * 1000);
 
   it('should be a function', function () {
     expect(o_o).to.be.a('function');
@@ -151,25 +152,25 @@ describe('index.js', function () {
     });
   });
 
-  it('should work with async', function (done) {
-    var fnc = o_o(function *() {
-
-      var result = yield async.map(['a', 'b', 'c'], function (item, cb) {
-        setTimeout(function () {
-          cb(null, item + ':change');
-        }, 10);
-      }, yield);
-
-      return result;
-    });
-
-    fnc(function (err, result) {
-      expect(result).to.deep.equal([
-        'a:change', 'b:change', 'c:change'
-      ]);
-      done();
-    });
-
-  });
+//  it('should work with async', function (done) {
+//    var fnc = o_o(function *() {
+//
+//      var result = yield async.map(['a', 'b', 'c'], function (item, cb) {
+//        setTimeout(function () {
+//          cb(null, item + ':change');
+//        }, 10);
+//      }, yield);
+//
+//      return result;
+//    });
+//
+//    fnc(function (err, result) {
+//      expect(result).to.deep.equal([
+//        'a:change', 'b:change', 'c:change'
+//      ]);
+//      done();
+//    });
+//
+//  });
 
 });
