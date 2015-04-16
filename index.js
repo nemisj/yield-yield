@@ -1,26 +1,26 @@
 /*global bootstrap, define, module, ses*/
 (function (definition) {
-  "use strict";
+  'use strict';
 
   // This file will function properly as a <script> tag, or a module
   // using CommonJS and NodeJS or RequireJS module formats.  In
-  // Common/Node/RequireJS, the module exports the Q API and when
-  // executed as a simple <script>, it creates a Q global instead.
+  // Common/Node/RequireJS, the module exports the yield-yield API and when
+  // executed as a simple <script>, it creates a o_o global instance.
 
   // Montage Require
-  if (typeof bootstrap === 'function') {
+  if (typeof bootstrap == 'function') {
     bootstrap('promise', definition);
 
     // CommonJS
-  } else if (typeof exports === 'object' && typeof module === 'object') {
+  } else if (typeof exports == 'object' && typeof module == 'object') {
     module.exports = definition();
 
     // RequireJS
-  } else if (typeof define === 'function' && define.amd) {
+  } else if (typeof define == 'function' && define.amd) {
     define(definition);
 
     // SES (Secure EcmaScript)
-  } else if (typeof ses !== 'undefined') {
+  } else if (typeof ses != 'undefined') {
     if (!ses.ok()) {
       return;
     } else {
@@ -28,7 +28,7 @@
     }
 
     // <script>
-  } else if (typeof self !== 'undefined') {
+  } else if (typeof self != 'undefined') {
     self.o_o = definition();
 
   } else {
@@ -38,29 +38,17 @@
 })(function () {
   'use strict';
 
-  // trying to create generator in order to know the Generator constructor
-  //
-  // trying to create generator in order to know the Generator constructor
-  var OGenerator;
+  var counter = 0;
+  // Creating generator in order to know the Generator constructor
+  var OGenerator = function*() {};
 
-  try {
-    OGenerator = function*(){};
-  } catch (e) {
-    var msg = 'yield-yield: Generators are not supported';
-    if (typeof console !== 'undefined') {
-      console.error(msg);
-    } else {
-      alert(msg);
-    }
-
-    return;
-  }
-
-  var promiser = function promiser(gen, promise, cb) {
+  function promiser(gen, promise, cb) {
     // it's a promise
     promise.then(function onSuccess(value) {
+      var v;
+
       try {
-        var v = gen.next([null, value]);
+        v = gen.next([null, value]);
       } catch (e) {
         cb(e);
         return;
@@ -71,8 +59,9 @@
       // Promise
       return;
     }, function onError(error) {
+      var v;
       try {
-        var v = gen.next([error]);
+        v = gen.next([error]);
       } catch (e) {
         cb(e);
         return;
@@ -80,10 +69,9 @@
 
       cb(null, v);
     });
-  };
+  }
 
-  var counter = 0;
-  var twicer = function twicer(gen, cb) {
+  function twicer(gen, cb) {
 
     var secondYieldCalled = false;
     var cbCalled = false;
@@ -91,23 +79,24 @@
     var stop = false;
     var returnFromGen;
     var v;
+    var yieldCallback;
 
     counter++;
 
     // callback which is returned when yield is called for the first time
-    var yieldCallback = function () {
-      var msg;
+    yieldCallback = function () {
+      var errMsg;
       if (stop) {
         // just do nothing, generator is stopped due to some error
         return;
       } else if (cbCalled) {
-        msg = 'Callback is called twice. This is not good';
+        errMsg = 'Callback is called twice. This is not good';
         if (secondYieldCalled) {
           // it's asynchronous
-          throw new Error(msg);
+          throw new Error(errMsg);
         } else {
           // it's the same loop
-          throw new Error(msg);
+          throw new Error(errMsg);
         }
         return;
       }
@@ -158,7 +147,7 @@
     // Generator could exit using return, so testing result
     if (returnFromGen.done) {
       stop = true;
-      return cb(new Error('Generator has no second yield statement. Using yield-yield is useles'));
+      return cb(new Error('Generator has no second yield statement. Using yield-yield is useless'));
     }
 
 
@@ -179,24 +168,34 @@
     }
 
     return cb(null, v);
-  };
+  }
 
 
-  function yieldTwice(Gen, args) {
+  function runner(Gen, args) {
 
+    // callback which is passed with args
     var cb;
+    // this is the wrapper which will calle cb
     var finalCallback;
+    // generator instance
+    var gen;
+    // result returned from the first yield
+    var result;
+    // checker of the main loop
+    var testValue;
 
     // take the last argument as callback, and all other stuff pass as
     // arguments to Gen
+    // but only if it was defined in original Generator
     args = args.slice();
 
     if (Gen.length === args.length - 1) {
       // doing magic
       cb = args[args.length - 1];
-      if (typeof cb === 'function') {
+      if (typeof cb == 'function') {
         // great, real magic
         args.pop();
+
         finalCallback = function () {
           // detach final callback from the thread
           // in order not to catch any errors in here
@@ -215,25 +214,29 @@
       finalCallback = function () {};
     }
 
-    var gen = Gen.apply(this, args);
+    gen = Gen.apply(this, args);
 
     // starts the Generator
     try {
       // first error before any yield will be called
-      var result = gen.next();
+      result = gen.next();
     } catch (e) {
       return finalCallback(e);
     }
 
-    var testValue = function (e, retValue) {
+    testValue = function (e, retValue) {
+      // object which is returned by yield or return
+      // sitting inside retValue.value
+      var realValue;
+
       if (e) {
         finalCallback(e);
         return;
       }
 
-      var realValue = retValue.value;
+      realValue = retValue.value;
 
-      // test if the generator has exit
+      // test if the generator has been exited
       if (retValue.done) {
         // generator is done
         // if realValue has unwrap boolean
@@ -250,31 +253,32 @@
       } else {
         // it's not return, but yield
 
-        if (typeof realValue === 'undefined') {
+        if (typeof realValue == 'undefined') {
           // this is a twicer, first callback
           // which means, that we pass the cb to the first yield
           // and returns value in the second yield
           twicer(gen, testValue);
-        } else if (typeof realValue.then === 'function') {
+        } else if (typeof realValue.then == 'function') {
           promiser(gen, realValue, testValue);
         }
-
       }
 
     };
 
     testValue(null, result);
 
-  };
+  }
 
   return function (Gen) {
+    var fnc;
+
     if (Gen.constructor != OGenerator.constructor) {
       throw new Error('Function is not a Generator');
     }
 
-    var fnc = function fnc(cb) {
+    fnc = function fnc() {
       var args = Array.prototype.slice.call(arguments);
-      yieldTwice(Gen, args);
+      runner(Gen, args);
     };
 
     fnc.run = function () {
@@ -287,4 +291,5 @@
 
     return fnc;
   };
+
 });
