@@ -37,6 +37,8 @@ module.exports = function (config) {
 
       'test/errors.test.js',
       'test/index.test.js'
+      // 'test/process.test.js',
+      // 'test/twice.test.js'
     ],
 
     frameworks: ['mocha', 'sinon-chai'],
