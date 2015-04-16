@@ -33,13 +33,14 @@ module.exports = function (config) {
   config.set({
     basePath: '.',
     files: [
-      'lib/yield-twice.js',
+      './index.js',
 
       'test/errors.test.js',
       'test/index.test.js'
     ],
+
     frameworks: ['mocha', 'sinon-chai'],
-    reporters: ['dots','saucelabs'],
+    reporters: ['dots', 'saucelabs'],
     // browsers: [ 'Chrome' ],
     browsers: Object.keys(customLaunchers),
     customLaunchers: customLaunchers,
