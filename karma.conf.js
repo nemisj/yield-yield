@@ -41,8 +41,7 @@ module.exports = function (config) {
 
     frameworks: ['mocha', 'sinon-chai'],
     reporters: ['dots', 'saucelabs'],
-    // browsers: [ 'Chrome' ],
-    browsers: Object.keys(customLaunchers),
+    browsers: process.env.NODE_ENV === 'development' ? [ 'Chrome' ] : Object.keys(customLaunchers),
     customLaunchers: customLaunchers,
     sauceLabs: {
       testName: 'Yield-yield tests'
