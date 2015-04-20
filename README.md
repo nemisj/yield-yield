@@ -1,6 +1,6 @@
 # var o_o = yield (yield)(); [![Build Status](https://travis-ci.org/nemisj/yield-yield.svg?branch=master)](https://travis-ci.org/nemisj/yield-yield)
 
-[![Coverage Status](https://coveralls.io/repos/nemisj/yield-yield/badge.svg)](https://coveralls.io/r/nemisj/yield-yield)
+[![NPM](https://nodei.co/npm/yield-yield.png)](https://npmjs.org/package/yield-yield)
 
 Double yield (yield-yield) is a library that helps organize asynchronous callback code, like this:
 
