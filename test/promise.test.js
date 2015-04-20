@@ -3,8 +3,9 @@
 'use strict';
 
 describe('Promise', function () {
-  
+
   var expect = chai.expect;
+  var Promise = require('promise');
 
   it('should run promise and return its value', function (done) {
 
@@ -23,6 +24,7 @@ describe('Promise', function () {
     });
 
     fnc(function (err) {
+      expect(err).to.be.not.ok;
       return done();
     });
 
@@ -51,6 +53,4 @@ describe('Promise', function () {
       return done();
     });
   });
-
-
 });
