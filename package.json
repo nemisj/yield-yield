@@ -1,7 +1,7 @@
 {
   "name": "yield-yield",
-  "version": "0.0.1",
-  "description": "Yeild functionality to write async code in sync manner",
+  "version": "0.0.2",
+  "description": "Sequential writing of asynchronous code",
   "main": "index.js",
   "scripts": {
     "dev:link": "cd node_modules && rm -rf yield-yield && ln -s ../ yield-yield",
@@ -16,7 +16,8 @@
   "keywords": [
     "async",
     "yield",
-    "javascript"
+    "generators",
+    "callback"
   ],
   "author": "Maks Nemisj <maks@nemisj.com> (http://nemisj.com/)",
   "license": "MIT",
