@@ -7,7 +7,7 @@
     "dev:link": "cd node_modules && rm -rf yield-yield && ln -s ../ yield-yield",
     "pretest": "npm run dev:link",
     "test": "mocha --harmony -r mocha.vars.js",
-    "test:karma" : "karma start"
+    "test:karma": "karma start"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,8 @@
   "homepage": "https://github.com/nemisj/twice-yield",
   "devDependencies": {
     "async": "^0.9.0",
+    "babel-core": "^5.1.11",
+    "babel-runtime": "^5.1.11",
     "chai": "^2.1.2",
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.7",

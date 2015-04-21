@@ -272,8 +272,8 @@
   return function (Gen) {
     var fnc;
 
-    if (Gen.constructor != OGenerator.constructor) {
-      throw new Error('Function is not a Generator');
+    if (typeof Gen != 'function') {
+      throw new Error('Generator is not a function');
     }
 
     fnc = function fnc() {
