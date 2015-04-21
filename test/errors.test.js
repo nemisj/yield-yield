@@ -1,7 +1,7 @@
 /*eslint es6:true */
 /*global o_o, expect*/
 
-describe('Errors', function () {
+describe('errors.test.js', function () {
 
   var expect = chai.expect;
 

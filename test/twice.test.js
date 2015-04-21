@@ -1,6 +1,6 @@
 /*global o_o, expect*/
 
-describe('test.twice.js', function () {
+describe('twice.test.js', function () {
 
   var fs = require('fs');
   var expect = chai.expect;

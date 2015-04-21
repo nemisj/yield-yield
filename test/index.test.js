@@ -1,4 +1,4 @@
-describe('index.js', function () {
+describe('index.test.js', function () {
 
   // var async = require('async');
   var expect = chai.expect;
