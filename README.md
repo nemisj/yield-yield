@@ -24,11 +24,8 @@ module.exports = o_o(function *() {
     //
     // Make the request to the server
     //
-    var requestResult = yield request
-      .post('/api/pet')
-      .send({ name: 'Manny', species: 'cat' })
-      .set('X-API-Key', 'foobar')
-      .set('Accept', 'application/json')
+    var requestResult = yield superagent
+      .get('/api/pet')
       .end(yield);
 
     //
