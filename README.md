@@ -38,3 +38,4 @@ module.exports = o_o(function *() {
 });
 ```
 
+[Read full Documentation](https://github.com/nemisj/yield-yield/docs/README.md)
