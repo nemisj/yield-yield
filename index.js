@@ -39,8 +39,6 @@
   'use strict';
 
   var counter = 0;
-  // Creating generator in order to know the Generator constructor
-  var OGenerator = function*() {};
 
   function promiser(gen, promise, cb) {
     // it's a promise

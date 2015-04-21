@@ -35,4 +35,6 @@ module.exports = o_o(function *() {
 });
 ```
 
+[Using together with babel](https://github.com/nemisj/yield-yield/docs/babel.md)
+
 [Read full Documentation](https://github.com/nemisj/yield-yield/docs/README.md)
