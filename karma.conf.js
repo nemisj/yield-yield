@@ -41,7 +41,8 @@ module.exports = function (config) {
       'test/errors.test.js',
       'test/index.test.js',
       'test/promise.test.js',
-      'test/twice.test.js'
+      'test/twice.test.js',
+      'test/mocha.test.js'
     ],
 
     frameworks: ['mocha', 'sinon-chai'],

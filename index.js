@@ -274,7 +274,7 @@
       throw new Error('Generator is not a function');
     }
 
-    fnc = function fnc() {
+    fnc = function fnc(cb) {
       var args = Array.prototype.slice.call(arguments);
       runner(Gen, args);
     };
