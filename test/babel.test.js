@@ -3,7 +3,7 @@ var babel = require('babel-core');
 var vm = require('vm');
 var expect = chai.expect;
 
-describe.only('babel', function () {
+describe('babel', function () {
   it('should work together with babel/register', function (done) {
 
     var resolvedPath = require.resolve('./utils/babel.mock.js');
