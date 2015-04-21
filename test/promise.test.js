@@ -2,20 +2,20 @@
 /*global o_o, expect*/
 'use strict';
 
-describe('Promise', function () {
+describe('promise.test.js', function () {
 
   var expect = chai.expect;
-  var Promise = require('promise');
 
   it('should run promise and return its value', function (done) {
 
     var getUsername = function () {
-      var p = new Promise(function (res, rej) {
-        setTimeout(function () {
-          res('Maks Nemisj');
-        }, 50);
-      });
-      return p;
+      var deferred = Q.defer();
+
+      setTimeout(function () {
+        deferred.resolve('Maks Nemisj');
+      }, 50);
+
+      return deferred.promise;
     };
 
     var fnc = o_o(function *() {
@@ -34,12 +34,13 @@ describe('Promise', function () {
     var message = 'Promise Error #' + ~~(Math.random() * 1000);
 
     var getUsername = function () {
-      var p = new Promise(function (res, rej) {
-        setTimeout(function () {
-          rej(message);
-        }, 50);
-      });
-      return p;
+      var deferred = Q.defer();
+
+      setTimeout(function () {
+        deferred.reject(message);
+      }, 50);
+
+      return deferred.promise;
     };
 
     var fnc = o_o(function *() {

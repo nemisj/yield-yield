@@ -35,6 +35,7 @@ module.exports = function (config) {
     files: [
       './index.js',
 
+      './node_modules/q/q.js',
       'test/utils/requireFS.js',
 
       'test/errors.test.js',

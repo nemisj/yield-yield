@@ -221,7 +221,7 @@ describe('Errors', function () {
   it('should give error that function is not a generator', function () {
     expect(function () {
       o_o({});
-    }).to.throw('Function is not a Generator');
+    }).to.throw('Generator is not a function');
 
   });
 
