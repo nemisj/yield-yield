@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/yield-yield.png)](https://npmjs.org/package/yield-yield)
 
-Double yield ( yield-yield ) helps you to organize asynchronously written code by structuring it sequentially.
+Double yield ( yield-yield ) helps you to organize asynchronously written code by structuring it sequentially without need to wrap or change your existing code.
 
 ```javascript
 var superagent = require('superagent');
