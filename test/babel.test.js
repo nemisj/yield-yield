@@ -24,7 +24,7 @@ describe('babel.test.js', function () {
     childModule.exports(function (err, result) {
 
       expect(err).to.be.not.ok;
-      expect(result > 100).to.be.true;
+      expect(result >= 100).to.be.true;
 
       return done();
     });
