@@ -22,4 +22,10 @@ describe('testing', function () {
 ```
 
 As you can see, no done is required, just wrap the function into the sync and
-make generator of it. That's all.
+make generator of it.
+
+To run the code please pass the --harmony flag to the mocha
+
+```javascript
+mocha --harmony
+```
