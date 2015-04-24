@@ -258,7 +258,10 @@
           twicer(gen, testValue);
         } else if (typeof realValue.then == 'function') {
           promiser(gen, realValue, testValue);
+        } else if (typeof realValue == 'function') {
+          // callback function?
         }
+
       }
 
     };
@@ -267,7 +270,7 @@
 
   }
 
-  return function (Gen) {
+  var module = function (Gen) {
     var fnc;
 
     if (typeof Gen != 'function') {
@@ -279,15 +282,14 @@
       runner(Gen, args);
     };
 
-    fnc.run = function () {
-      return fnc(function (err) {
-        if (err) {
-          throw err;
-        }
-      });
-    };
-
     return fnc;
+
   };
+
+  module.run = function (Gen) {
+    return module(Gen)();
+  }
+
+  return module;
 
 });

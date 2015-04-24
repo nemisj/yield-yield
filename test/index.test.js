@@ -176,6 +176,13 @@ describe('index.test.js', function () {
 
   });
 
+  it('should have run', function (done) {
+    o_o.run(function *() {
+      yield setTimeout(yield, 20);
+      return done();
+    })
+  });
+
 //  it('should work with async', function (done) {
 //    var fnc = o_o(function *() {
 //

@@ -7,7 +7,7 @@ describe('twice.test.js', function () {
 
   it('should wait till the callback in the normal conditions', function (done) {
 
-    o_o(function *() {
+    o_o.run(function *() {
       var result = yield fs.readFile(__filename, { encoding: 'utf8' }, yield);
 
       expect(result[0]).to.be.null;
@@ -15,7 +15,7 @@ describe('twice.test.js', function () {
 
       return done();
 
-    }).run();
+    })
 
   });
 
@@ -34,7 +34,7 @@ describe('twice.test.js', function () {
 
   it('should run correctly when callback is called before the yield', function (done) {
 
-    o_o(function *() {
+    o_o.run(function *() {
 
       var cb = yield;
       cb('First argument');
@@ -43,13 +43,13 @@ describe('twice.test.js', function () {
       expect(result[0]).to.equal('First argument');
 
       return done();
-    }).run();
+    })
 
   });
 
   it('should run multiple times in sync-flow', function (done) {
 
-    o_o(function *() {
+    o_o.run(function *() {
       var cb = yield;
       cb('Result one');
       var resultOne = yield;
@@ -62,13 +62,13 @@ describe('twice.test.js', function () {
       expect(resultTwo[0]).to.equal('Result two');
 
       return done();
-    }).run();
+    })
 
 
   });
 
   it('should run multiple times in async-flow', function (done) {
-    o_o(function *() {
+    o_o.run(function *() {
 
       var cb = yield;
       var resultOne = yield setTimeout(function () {
@@ -84,7 +84,7 @@ describe('twice.test.js', function () {
       expect(resultTwo[1]).to.equal('result two');
 
       return done();
-    }).run();
+    })
 
   });
 
