@@ -152,6 +152,30 @@ describe('index.test.js', function () {
     });
   });
 
+  it('should execute both methods', function (done) {
+    var execute = o_o(function *(request){ 
+      // this one sends request to the server
+      yield setTimeout(yield, 30);
+      return request + ':' + new Date().getTime();
+    });
+
+    var get = o_o(function *(name) {
+      var upper = name.toUpperCase();
+      return yield execute(upper, yield);
+    });
+
+    var start = new Date().getTime();
+    get('maks', function (err, result) {
+      var split = result.split(':');
+      expect(split[0]).to.be.equal('MAKS');
+      expect(split[1] - start >= 30).to.be.true;
+
+      return done();
+    });
+
+
+  });
+
 //  it('should work with async', function (done) {
 //    var fnc = o_o(function *() {
 //
