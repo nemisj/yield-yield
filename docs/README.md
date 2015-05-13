@@ -347,3 +347,21 @@ wrapper(function (err) {
   // err will be empty
 });
 ```
+
+# Using raw generators
+
+In case you use generators only internally then there is no need to wrap the
+generator inside the factory, but it can be called directly from the other
+generators runner.
+
+```javascript
+var o_o = require('yield-yield');
+
+var raw = function *(a) {
+  var content = yield fs.readFile(inputFile, 'utf8', yield);
+}
+
+o_o.run(function * () {
+  var result = yield raw('a');
+});
+```

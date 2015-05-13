@@ -16,6 +16,31 @@ describe('index.test.js', function () {
 
   });
 
+  it('should run raw generator as is', function (done) {
+    var id = new Date().getTime().toString(16);
+
+    var rawGenerator = function *(a) {
+
+      var cb = yield;
+
+      yield setTimeout(function () {
+        return cb();
+      }, 20);
+
+      return a + '!';
+    };
+
+    o_o.run(function *() {
+      var result = yield rawGenerator(id);
+
+      expect(result[1]).to.be.equal(id + '!');
+      
+      done();
+
+    });
+
+  });
+
   /*
   it('should never execute callback', function (done) {
     var called = false;

@@ -168,51 +168,12 @@
     return cb(null, v);
   }
 
+  function start(gen, finalCallback) {
 
-  function runner(Gen, args) {
-
-    // callback which is passed with args
-    var cb;
-    // this is the wrapper which will calle cb
-    var finalCallback;
-    // generator instance
-    var gen;
     // result returned from the first yield
     var result;
     // checker of the main loop
     var testValue;
-
-    // take the last argument as callback, and all other stuff pass as
-    // arguments to Gen
-    // but only if it was defined in original Generator
-    args = args.slice();
-
-    if (Gen.length === args.length - 1) {
-      // doing magic
-      cb = args[args.length - 1];
-      if (typeof cb == 'function') {
-        // great, real magic
-        args.pop();
-
-        finalCallback = function () {
-          // detach final callback from the thread
-          // in order not to catch any errors in here
-          var recivedArgs = arguments;
-          // make it one-time call
-          finalCallback = function () {};
-          setTimeout(function () {
-            cb.apply(this, recivedArgs);
-          }, 0);
-
-          return;
-        };
-      }
-    } else {
-      // arguments mismatch
-      finalCallback = function () {};
-    }
-
-    gen = Gen.apply(this, args);
 
     // starts the Generator
     try {
@@ -258,8 +219,31 @@
           twicer(gen, testValue);
         } else if (typeof realValue.then == 'function') {
           promiser(gen, realValue, testValue);
+        } else if (typeof realValue == 'object') {
+          // this might be generator
+          // or null
+          if (typeof realValue.next == 'function') {
+
+            start(realValue, function () {
+              var args = Array.prototype.slice.call(arguments);
+
+              try {
+                result = gen.next(args);
+              } catch (e) {
+                testValue(e);
+              }
+
+              if (result) {
+                testValue(null, result);
+              }
+
+            });
+
+          }
+
         } else if (typeof realValue == 'function') {
-          // callback function?
+          // function
+          finalCallback(new Error('Function support not implemented yet'));
         }
 
       }
@@ -267,6 +251,52 @@
     };
 
     testValue(null, result);
+  }
+
+
+  function runner(Gen, args) {
+
+    // callback which is passed with args
+    var cb;
+    // this is the wrapper which will calle cb
+    var finalCallback;
+    // generator instance
+    var gen;
+
+    // take the last argument as callback, and all other stuff pass as
+    // arguments to Gen
+    // but only if it was defined in original Generator
+    args = args.slice();
+
+    if (Gen.length === args.length - 1) {
+      // doing magic
+      cb = args[args.length - 1];
+      if (typeof cb == 'function') {
+        // great, real magic
+        args.pop();
+
+        finalCallback = function () {
+          // detach final callback from the thread
+          // in order not to catch any errors in here
+          var recivedArgs = arguments;
+          // make it one-time call
+          finalCallback = function () {};
+          setTimeout(function () {
+            cb.apply(this, recivedArgs);
+          }, 0);
+
+          return;
+        };
+      }
+    } else {
+      // arguments mismatch
+      finalCallback = function () {};
+    }
+
+    gen = Gen.apply(this, args);
+
+    start(gen, finalCallback);
+
 
   }
 
