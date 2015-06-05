@@ -16,6 +16,26 @@ describe('index.test.js', function () {
 
   });
 
+  it('should run two raw generators as is', function (done) {
+    var one = function *(a) {
+      yield setTimeout(yield, 20);
+      return 'one';
+    };
+
+    var two = function *(a) {
+      var resultOne = yield one();
+      yield setTimeout(yield, 20);
+      return [resultOne, 'two'];
+    };
+
+    o_o.run(function *() {
+      var resultTwo = yield two();
+      expect(resultTwo).to.deep.equal(['one', 'two']);
+      return done();
+    });
+
+  });
+
   it('should run raw generator as is', function (done) {
     var id = new Date().getTime().toString(16);
 

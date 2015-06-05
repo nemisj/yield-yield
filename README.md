@@ -14,7 +14,11 @@ module.exports = o_o(function *() {
     //
     // Read file from fs
     //
-    var fileResult = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
+    try {
+      var content = yield fs.readFile('/etc/hosts', { encoding: 'utf8'}, yield);
+    } catch (e) {
+      console.log('Unable to read file', e);
+    }
 
     //
     // Pause for a second
@@ -24,7 +28,7 @@ module.exports = o_o(function *() {
     //
     // Make the request to the server
     //
-    var requestResult = yield superagent
+    var response = yield superagent
       .get('/api/pet')
       .end(yield);
 
@@ -35,7 +39,7 @@ module.exports = o_o(function *() {
 });
 ```
 
-[Read full Documentation](https://github.com/nemisj/yield-yield/docs/README.md)
+[Read full Documentation](https://github.com/nemisj/yield-yield/tree/master/docs)
 
 * [Using together with babel](https://github.com/nemisj/yield-yield/blob/master/docs/babel.md)
 * [Using together with mocha](https://github.com/nemisj/yield-yield/blob/master/docs/mocha.md)
