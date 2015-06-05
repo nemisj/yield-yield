@@ -20,7 +20,7 @@ describe('promise.test.js', function () {
 
     var fnc = o_o(function *() {
       var result = yield getUsername();
-      expect(result[1]).to.be.equal('Maks Nemisj');
+      expect(result).to.be.equal('Maks Nemisj');
     });
 
     fnc(function (err) {
@@ -45,13 +45,18 @@ describe('promise.test.js', function () {
 
     var fnc = o_o(function *() {
       // this one will throw error and willstop
-      var result = yield getUsername();
-      expect(result[0]).to.be.equal(message);
+      var result = null;
+      try {
+        yield getUsername();
+      } catch (e) {
+        result = e;
+      }
+
+      expect(result).to.be.equal(message);
+
     });
 
-    fnc(function (err) {
-      expect(err).to.be.not.ok;
-      return done();
-    });
+    fnc(done);
+
   });
 });

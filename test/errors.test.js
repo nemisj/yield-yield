@@ -225,6 +225,124 @@ describe('errors.test.js', function () {
 
   });
 
+  it('should throw and catch an error when callback recieves error as first argument', function (done) {
+    var msg = 'error #' + ~~(Math.random() * 1000);
+
+    var method = function (cb) {
+      setTimeout(function () {
+        cb(new Error(msg));
+      }, 50);
+    };
+
+    var result = null;
+
+    var gen = o_o(function *() {
+      var cb = yield;
+
+      try {
+        yield method(cb);
+      } catch (e) {
+        result = e;
+      }
+
+      return;
+    });
+
+    gen(function () {
+      expect(result).to.have.property('message').and.be.equal(msg);
+      return done();
+    });
+  });
+
+  it('should throw an error when callback receives error as first argument', function (done) {
+    var msg = 'error #' + ~~(Math.random() * 1000);
+
+    var method = function (cb) {
+      setTimeout(function () {
+        cb(new Error(msg));
+      }, 50);
+    };
+
+    var gen = o_o(function *() {
+      var cb = yield;
+
+      yield method(cb);
+
+      return;
+    });
+
+    gen(function (result) {
+      expect(result).to.have.property('message').and.be.equal(msg);
+      return done();
+    });
+  });
+
+  it('should NOT block generator after error is thrown', function (done) {
+    var msg = 'error #' + ~~(Math.random() * 1000);
+
+    var method = function (cb) {
+      setTimeout(function () {
+        cb(new Error(msg));
+      }, 50);
+    };
+
+    var flag = 'bad';
+
+    var gen = o_o(function *() {
+      var cb = yield;
+
+      try {
+        yield method(cb);
+      } catch(e) {
+        flag = 'processed';
+      }
+
+      cb = yield;
+      yield setTimeout(function () {
+        cb();
+      }, 50);
+
+      flag = 'good';
+
+      return;
+    });
+
+    gen(function () {
+      expect(flag).to.be.equal('good');
+      return done();
+    });
+  });
+
+  it('should break with raw generator', function (done) {
+    var id = new Date().getTime().toString(16);
+
+    var rawGenerator = function *(a) {
+
+      var cb = yield;
+
+      yield setTimeout(function () {
+        return cb();
+      }, 20);
+
+      throw new Error(id);
+    };
+
+    o_o.run(function *() {
+      var result;
+
+      try {
+        yield rawGenerator(id);
+      } catch(e) {
+        result = e;
+      }
+
+      expect(result.message).to.be.equal(id);
+
+      done();
+    });
+
+  });
+
 //  it('should detach from the main thread when calling cb', function (done) {
 //
 //    var counter = 0;

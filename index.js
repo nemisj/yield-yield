@@ -40,13 +40,39 @@
 
   var counter = 0;
 
+  function callNext(gen, callbackReturnValue) {
+    // test for the first value in callbackReturnValue
+    var firstValue = callbackReturnValue[0];
+    var v;
+
+    if (firstValue === null || typeof firstValue == 'undefined') {
+      if (callbackReturnValue.length <= 1) {
+        v = gen.next();
+      } else {
+        // if there are more then one item, create an array of it, but show warning in the console
+        if (callbackReturnValue.length == 2) {
+          v = gen.next(callbackReturnValue[1]);
+        } else {
+          // console.log('more then one argument is passed to the callback');
+          callbackReturnValue.shift();
+          v = gen.next(callbackReturnValue);
+        }
+      }
+    } else {
+      // this is an error state
+      v = gen.throw(firstValue);
+    }
+
+    return v;
+  }
+
   function promiser(gen, promise, cb) {
     // it's a promise
     promise.then(function onSuccess(value) {
       var v;
 
       try {
-        v = gen.next([null, value]);
+        v = gen.next(value);
       } catch (e) {
         cb(e);
         return;
@@ -59,7 +85,7 @@
     }, function onError(error) {
       var v;
       try {
-        v = gen.next([error]);
+        v = gen.throw(error);
       } catch (e) {
         cb(e);
         return;
@@ -74,6 +100,7 @@
     var secondYieldCalled = false;
     var cbCalled = false;
     var callbackReturnValue;
+    // first value of the arguments passed to the yieldCallback
     var stop = false;
     var returnFromGen;
     var v;
@@ -104,10 +131,6 @@
       cbCalled = true;
 
       callbackReturnValue = Array.prototype.slice.call(arguments);
-      // callbackReturnValue is an array
-      // add extra information to it, so that we can unwrap it when using with
-      // the simple callback
-      callbackReturnValue.unwrap = true;
 
       // if geneartor was already postponed, but the second yield statement
       // execute next()
@@ -117,8 +140,9 @@
         return;
       }
 
+
       try {
-        v = gen.next(callbackReturnValue);
+        v = callNext(gen, callbackReturnValue);
       } catch (e) {
         // this can happen
         // after the second yield and next return/yield statement
@@ -158,7 +182,7 @@
     //if cb is already called, execute .next
     // resume the second yield statement
     try {
-      v = gen.next(callbackReturnValue);
+      v = callNext(gen, callbackReturnValue);
     } catch (e) {
       // this error might happen between second yield and the return/yield
       // statement
@@ -169,6 +193,10 @@
   }
 
   function start(gen, finalCallback) {
+
+    if (!gen.__id__) {
+      gen.__id__ = ~~(Math.random() * 1000);
+    }
 
     // result returned from the first yield
     var result;
@@ -202,9 +230,6 @@
         // then apply arguments asif they're real args
         if (typeof realValue == 'undefined') {
           return finalCallback();
-        } else if (realValue.unwrap) {
-          // unwrap value, since it's internal arguments
-          return finalCallback.apply(this, realValue);
         } else {
           return finalCallback(null, realValue);
         }
@@ -223,20 +248,23 @@
           // this might be generator
           // or null
           if (typeof realValue.next == 'function') {
-
             start(realValue, function () {
               var args = Array.prototype.slice.call(arguments);
+              var err;
+
+              result = null;
 
               try {
-                result = gen.next(args);
+                result = callNext(gen, args);
               } catch (e) {
-                testValue(e);
+                err = e;
               }
 
-              if (result) {
+              if (err) {
+                return testValue(err);
+              } else {
                 testValue(null, result);
               }
-
             });
 
           }
@@ -296,7 +324,6 @@
     gen = Gen.apply(this, args);
 
     start(gen, finalCallback);
-
 
   }
 

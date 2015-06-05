@@ -10,12 +10,10 @@ describe('twice.test.js', function () {
     o_o.run(function *() {
       var result = yield fs.readFile(__filename, { encoding: 'utf8' }, yield);
 
-      expect(result[0]).to.be.null;
-      expect(result[1]).to.include('describe');
+      expect(result).to.include('describe');
 
       return done();
-
-    })
+    });
 
   });
 
@@ -37,13 +35,13 @@ describe('twice.test.js', function () {
     o_o.run(function *() {
 
       var cb = yield;
-      cb('First argument');
+      cb(null, 'First argument');
       var result = yield;
 
-      expect(result[0]).to.equal('First argument');
+      expect(result).to.equal('First argument');
 
       return done();
-    })
+    });
 
   });
 
@@ -51,18 +49,18 @@ describe('twice.test.js', function () {
 
     o_o.run(function *() {
       var cb = yield;
-      cb('Result one');
+      cb(null, 'Result one');
       var resultOne = yield;
 
       var cb = yield;
-      cb('Result two');
+      cb(null, 'Result two');
       var resultTwo = yield;
 
-      expect(resultOne[0]).to.equal('Result one');
-      expect(resultTwo[0]).to.equal('Result two');
+      expect(resultOne).to.equal('Result one');
+      expect(resultTwo).to.equal('Result two');
 
       return done();
-    })
+    });
 
 
   });
@@ -80,28 +78,28 @@ describe('twice.test.js', function () {
         return cb(null, 'result two');
       }, 50);
       
-      expect(resultOne[1]).to.equal('result one');
-      expect(resultTwo[1]).to.equal('result two');
+      expect(resultOne).to.equal('result one');
+      expect(resultTwo).to.equal('result two');
 
       return done();
-    })
+    });
 
   });
 
   it('should do something when generator returns before in sync-flow', function (done) {
 
-      var fnc = o_o(function *() {
-        var cb = yield;
+    var fnc = o_o(function *() {
+      var cb = yield;
 
-        cb(null, 'result one');
+      cb(null, 'result one');
 
-        return;
-      });
+      return;
+    });
 
-      fnc(function (e) {
-        expect(e.message).to.include('Generator has no second yield statement');
-        return done();
-      });
+    fnc(function (e) {
+      expect(e.message).to.include('Generator has no second yield statement');
+      return done();
+    });
 
   });
 

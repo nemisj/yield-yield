@@ -33,7 +33,7 @@ describe('index.test.js', function () {
     o_o.run(function *() {
       var result = yield rawGenerator(id);
 
-      expect(result[1]).to.be.equal(id + '!');
+      expect(result).to.be.equal(id + '!');
       
       done();
 
@@ -103,16 +103,17 @@ describe('index.test.js', function () {
     var fnc = o_o(function *() {
       var cb = yield;
 
-      return yield setTimeout(function () {
-        cb('arg1', 'arg2', 'arg3');
+      var r = yield setTimeout(function () {
+        cb(null, 'arg1', 'arg2', 'arg3');
       }, 50);
 
+      return r;
     });
 
-    fnc(function (arg1, arg2, arg3) {
-      expect(arg1).to.equal('arg1');
-      expect(arg2).to.equal('arg2');
-      expect(arg3).to.equal('arg3');
+    fnc(function (e, r) {
+      expect(r[0]).to.equal('arg1');
+      expect(r[1]).to.equal('arg2');
+      expect(r[2]).to.equal('arg3');
 
       return done();
     });
@@ -124,7 +125,7 @@ describe('index.test.js', function () {
       var cb = yield;
 
       setTimeout(function () {
-        cb('arg1', 'arg2', 'arg3');
+        cb(null, 'arg1', 'arg2', 'arg3');
       }, 50);
 
       var result = yield;
