@@ -315,7 +315,7 @@
 
           return;
         };
-      }
+      } else finalCallback = function() {};
     } else {
       // arguments mismatch
       finalCallback = function () {};
