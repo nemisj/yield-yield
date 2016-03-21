@@ -343,6 +343,19 @@ describe('errors.test.js', function () {
 
   });
 
+  it('should break when too much arguments are specified', function () {
+    var fnc = o_o(function *(one, two) {
+      console.log('hoho', one);
+    });
+
+    expect(function () {
+      fnc('bla', 'two', 'three');
+    }).to.throw('Arguments mismatch, too much arguments passed.');
+
+  });
+
+
+
 //  it('should detach from the main thread when calling cb', function (done) {
 //
 //    var counter = 0;

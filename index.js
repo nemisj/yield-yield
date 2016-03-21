@@ -315,6 +315,11 @@
 
           return;
         };
+      } else {
+        // arguments mismatch
+        let message = 'Arguments mismatch, too much arguments passed. Wanted ' + Gen.length + ' passed ' + args.length;
+        // console.error(message);
+        throw new Error(message);
       }
     } else {
       // arguments mismatch
