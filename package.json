@@ -1,6 +1,6 @@
 {
   "name": "yield-yield",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sequential writing of asynchronous code",
   "main": "index.js",
   "scripts": {
