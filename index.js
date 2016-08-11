@@ -19,20 +19,12 @@
   } else if (typeof define == 'function' && define.amd) {
     define(definition);
 
-    // SES (Secure EcmaScript)
-  } else if (typeof ses != 'undefined') {
-    if (!ses.ok()) {
-      return;
-    } else {
-      ses.makeQ = definition;
-    }
-
     // <script>
   } else if (typeof self != 'undefined') {
     self.o_o = definition();
 
   } else {
-    throw new Error('This environment was not anticipated by Q. Please file a bug.');
+    throw new Error('This environment was not anticipated by "yield-yield". Please file a bug.');
   }
 
 })(function () {
