@@ -5,6 +5,11 @@ describe('errors.test.js', function () {
 
   var expect = chai.expect;
 
+  // XXX: don't know how to handle it,
+  it.skip('should throw when no callback is specified', function (done) {
+    o_o.run(function *() { throw new Error('zork'); })
+  });
+
   it('breaks before first yield', function (done) {
     var msg = 'error #' + ~~(Math.random() * 1000);
     var fnc = o_o(function *() {

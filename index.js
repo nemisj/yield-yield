@@ -288,6 +288,7 @@
     // but only if it was defined in original Generator
     args = args.slice();
 
+    // if the last one is not a callback, send all the stuff to the throw
     if (Gen.length === args.length - 1) {
       // doing magic
       cb = args[args.length - 1];
@@ -315,7 +316,14 @@
       }
     } else {
       // arguments mismatch
-      finalCallback = function () {};
+      finalCallback = function (e) {
+        finalCallback = function () {};
+        if (e) {
+          setTimeout(function () {
+            throw e;
+          }, 0);
+        }
+      };
     }
 
     gen = Gen.apply(this, args);
