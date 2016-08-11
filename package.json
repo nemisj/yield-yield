@@ -36,7 +36,7 @@
     "karma-mocha": "^0.1.10",
     "karma-sauce-launcher": "^0.2.10",
     "karma-sinon-chai": "^0.3.0",
-    "mocha": "^2.2.1",
+    "mocha": "^3.0.2",
     "promise": "^6.1.0",
     "q": "^1.2.0"
   }
