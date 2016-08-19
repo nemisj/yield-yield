@@ -10,4 +10,4 @@
 
 ### Bug Fixes
 
- * [nemisj/yield-yield/#5] Throw error when no callback is provided
+ * [#5](nemisj/yield-yield/#5) Throw error when no callback is provided
