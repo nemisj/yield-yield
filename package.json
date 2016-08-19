@@ -7,7 +7,8 @@
     "dev:link": "cd node_modules && rm -rf yield-yield && ln -s ../ yield-yield",
     "pretest": "npm run dev:link",
     "test": "mocha --harmony -r mocha.vars.js",
-    "test:karma": "karma start"
+    "test:karma": "karma start",
+    "test:karma-local": "NODE_ENV=development karma start"
   },
   "repository": {
     "type": "git",

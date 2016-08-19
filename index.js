@@ -32,12 +32,14 @@
 
   var counter = 0;
 
-  function callNext(gen, callbackReturnValue) {
+  function callNext(gen, callbackReturnValue, raw) {
     // test for the first value in callbackReturnValue
     var firstValue = callbackReturnValue[0];
     var v;
 
-    if (firstValue === null || typeof firstValue == 'undefined') {
+    if (raw) {
+        v = gen.next(callbackReturnValue);
+    } else if (firstValue === null || typeof firstValue == 'undefined') {
       if (callbackReturnValue.length <= 1) {
         v = gen.next();
       } else {
@@ -87,7 +89,7 @@
     });
   }
 
-  function twicer(gen, cb) {
+  function twicer(gen, cb, raw) {
 
     var secondYieldCalled = false;
     var cbCalled = false;
@@ -134,7 +136,7 @@
 
 
       try {
-        v = callNext(gen, callbackReturnValue);
+        v = callNext(gen, callbackReturnValue, raw);
       } catch (e) {
         // this can happen
         // after the second yield and next return/yield statement
@@ -174,7 +176,7 @@
     //if cb is already called, execute .next
     // resume the second yield statement
     try {
-      v = callNext(gen, callbackReturnValue);
+      v = callNext(gen, callbackReturnValue, raw);
     } catch (e) {
       // this error might happen between second yield and the return/yield
       // statement
@@ -233,7 +235,7 @@
           // this is a twicer, first callback
           // which means, that we pass the cb to the first yield
           // and returns value in the second yield
-          twicer(gen, testValue);
+          twicer(gen, testValue, false);
         } else if (typeof realValue.then == 'function') {
           promiser(gen, realValue, testValue);
         } else if (typeof realValue == 'object') {
@@ -264,6 +266,8 @@
         } else if (typeof realValue == 'function') {
           // function
           finalCallback(new Error('Function support not implemented yet'));
+        } else if (realValue === 'RAW') {
+          twicer(gen, finalCallback, true);
         }
 
       }
@@ -351,6 +355,8 @@
   module.run = function (Gen) {
     return module(Gen)();
   }
+
+  module.RAW = 'RAW';
 
   return module;
 
