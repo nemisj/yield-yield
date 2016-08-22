@@ -4,7 +4,7 @@
 
 In order to run generated functionss directly, use `run()` method
 
-```
+```javascript
 o_o.run(function *main() {
   var content = yield fs.readFile(p, yield);
   console.log(content);
@@ -14,7 +14,8 @@ o_o.run(function *main() {
 ## Nested generators
 
 `yield-yield` supports nested generators
-```
+
+```javascript
 function *one() {
  var result = yield superagent
   .get(url)
@@ -48,3 +49,28 @@ var arr = yield asyncWithError(yield RAW);
 // arr will be [ Error, 'Two' ]
 ```
 
+## import { QCOLLECT, QRUN } from 'yield-yield'
+
+It's possible to use `yield-yield` to run asynchronous functions
+in parralel without blocking the flow and wait for the result from all of them, like
+`Promise.all` or `async.parallel` are doing. For that `QRUN` and `QCOLLECT`flags
+should be used.
+
+```javascript
+function getBody(url, cb) {
+ superagent
+  .get(url)
+  .end(function (err, res) {
+    return cb(err, res && res.body);
+  });
+}
+
+getBody('http://nemisj.com', yield QRUN);
+getBody('http://yahoo.com', yield QRUN);
+
+var results = yield QCOLLECT;
+
+// results going to be array of arrays,
+// each run having own resultSet with arguments passed to the cb
+// [ [ null, htmlOfNemisj.com ], [ null, htmlOfYahoo ] ]
+```
