@@ -30,15 +30,17 @@
     "async": "^0.9.0",
     "babel-core": "^5.1.11",
     "babel-runtime": "^5.1.11",
-    "chai": "^2.1.2",
-    "karma": "^0.12.31",
-    "karma-chrome-launcher": "^0.1.7",
-    "karma-cli": "0.0.4",
-    "karma-mocha": "^0.1.10",
-    "karma-sauce-launcher": "^0.2.10",
-    "karma-sinon-chai": "^0.3.0",
+    "chai": "^2.3.0",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-mocha": "^1.1.1",
+    "karma-sauce-launcher": "^1.0.0",
+    "karma-sinon-chai": "^1.2.3",
     "mocha": "^3.0.2",
     "promise": "^6.1.0",
-    "q": "^1.2.0"
+    "q": "^1.2.0",
+    "sinon": "^1.17.5",
+    "sinon-chai": "^2.8.0"
   }
 }
