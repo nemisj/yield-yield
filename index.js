@@ -60,6 +60,85 @@
     return v;
   }
 
+  function Queuer() {
+
+    this._callback = null;
+    this._results = [];
+
+    this.run = function (gen, cb) {
+      var result = {
+        callbackReturnValue: null,
+        finished: false
+      };
+
+      var returnFromGen;
+
+      this._results.push(result);
+
+      try {
+        var _this = this;
+        // Step 1: sending callback
+        returnFromGen = gen.next(function () {
+          result.callbackReturnValue = Array.prototype.slice.call(arguments);
+          result.finished = true;
+          _this.onComplete();
+        });
+      } catch (e) {
+        // code might break before next yield is called
+        cb(e);
+        return;
+      }
+
+      cb(null, returnFromGen);
+    }
+
+    this.onComplete = function () {
+      if (!this._callback) {
+        return;
+      }
+
+      var args = [];
+
+      // there is a callback
+      // test for all the values
+      
+      // first, check if all the results are collected
+      this._results.forEach(function (result) {
+        if (result.finished) {
+          args.push(result.callbackReturnValue);
+        }
+      });
+
+      if (this._results.length === args.length) {
+        // we have all the results
+        var cb = this._callback;
+        this._callback = null;
+        // cleanup the results
+        this._results = [];
+        cb(null, args);
+      }
+    }
+
+    this.collect = function (gen, cb) {
+      this._callback = function (err, results) {
+        var v = null;
+        try {
+          // it's not possible to have error in this state
+          // that's why [ null, ...]
+          v = callNext(gen, [null, results ]);
+        } catch (e) {
+          cb(e);
+          return;
+        }
+
+        cb(null, v);
+      };
+
+      // make sure, that callback is called
+      this.onComplete();
+    }
+  }
+
   function promiser(gen, promise, cb) {
     // it's a promise
     promise.then(function onSuccess(value) {
@@ -197,6 +276,9 @@
     // checker of the main loop
     var testValue;
 
+    // queue
+    var queue = new Queuer();
+
     // starts the Generator
     try {
       // first error before any yield will be called
@@ -213,6 +295,8 @@
       if (e) {
         finalCallback(e);
         return;
+      } else if (!retValue) {
+        console.error('This should never happen');
       }
 
       realValue = retValue.value;
@@ -268,6 +352,10 @@
           finalCallback(new Error('Function support not implemented yet'));
         } else if (realValue === 'RAW') {
           twicer(gen, finalCallback, true);
+        } else if (realValue === 'QCOLLECT') {
+          queue.collect(gen, testValue);
+        } else if (realValue === 'QRUN') {
+          queue.run(gen, testValue);
         }
 
       }
@@ -333,7 +421,6 @@
     gen = Gen.apply(this, args);
 
     start(gen, finalCallback);
-
   }
 
   var module = function (Gen) {
@@ -357,6 +444,8 @@
   }
 
   module.RAW = 'RAW';
+  module.QCOLLECT = 'QCOLLECT';
+  module.QRUN = 'QRUN';
 
   return module;
 
