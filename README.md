@@ -39,7 +39,8 @@ module.exports = o_o(function *() {
 });
 ```
 
-[Read full Documentation](https://github.com/nemisj/yield-yield/tree/master/docs)
+[Read full Documentation](./docs)
 
-* [Using together with babel](https://github.com/nemisj/yield-yield/blob/master/docs/babel.md)
-* [Using together with mocha](https://github.com/nemisj/yield-yield/blob/master/docs/mocha.md)
+* [API](./docs/API.md)
+* [Using together with babel](./docs/babel.md)
+* [Using together with mocha](./docs/mocha.md)
