@@ -374,6 +374,8 @@
     var finalCallback;
     // generator instance
     var gen;
+    // message for error
+    var message;
 
     // take the last argument as callback, and all other stuff pass as
     // arguments to Gen
@@ -402,7 +404,7 @@
         };
       } else {
         // arguments mismatch
-        let message = 'Arguments mismatch, too much arguments passed. Wanted ' + Gen.length + ' passed ' + args.length;
+        message = 'Arguments mismatch, too much arguments passed. Wanted ' + Gen.length + ' passed ' + args.length;
         // console.error(message);
         throw new Error(message);
       }
